@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Cancer Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        #result img {
+            max-width: 200px;
+            margin: 10px;
+            display: inline-block;
+        }
+        .probabilities {
+            margin-top: 10px;
+        }
+        .probabilities p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Skin Cancer Detection</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="image" name="image" accept="image/*">
+        <button type="submit">Upload and Predict</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const imageFile = document.getElementById('image').files[0];
+        
+            if (!imageFile) {
+                document.getElementById('result').innerHTML = '<p>Please upload an image.</p>';
+                return;
+            }
+        
+            formData.append('image', imageFile);
+        
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+        
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    document.getElementById('result').innerHTML = `<p>Error: ${errorData.error}</p>`;
+                    return;
+                }
+        
+                const result = await response.json();
+                
+                // Display the predicted disease
+                let resultHtml = `<h2>Predicted Disease: ${result.predicted_disease}</h2>`;
+                
+                // Display probabilities with disease names instead of class numbers
+                if (result.predicted_probabilities) {
+                    resultHtml += '<div class="probabilities"><h3>Class Probabilities:</h3>';
+                    resultHtml += '<ul>';
+                    result.predicted_probabilities.forEach((prob, index) => {
+                        resultHtml += `<li>${result.disease_names[index]}: ${(prob * 100).toFixed(2)}%</li>`;
+                    });
+                    resultHtml += '</ul></div>';
+                }
+
+                // Display similar disease images if available
+                if (result.similar_disease_images && result.similar_disease_images.length > 0) {
+                    resultHtml += '<div><h3>Similar Disease Images:</h3>';
+                    result.similar_disease_images.forEach(imgUrl => {
+                        resultHtml += `<img src="${imgUrl}" alt="Similar Disease Image">`;
+                    });
+                    resultHtml += '</div>';
+                }
+
+                document.getElementById('result').innerHTML = resultHtml;
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = '<p>An error occurred. Please try again.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

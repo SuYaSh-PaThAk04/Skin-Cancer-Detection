@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Health Information Form</title>
+    <link rel="stylesheet" href="form.css">
+</head>
+<body>
+    <div class="container">
+        <h1>User Health Information Form</h1>
+
+        <!-- Age Input -->
+        <div class="input-group">
+            <label for="age">Enter your Age:</label>
+            <input type="number" id="age" placeholder="Age in years" required />
+        </div>
+
+        <!-- Diabetes Input -->
+        <div class="input-group">
+            <label for="diabetes">Do you have Diabetes? (yes/no):</label>
+            <input type="text" id="diabetes" placeholder="yes/no" required />
+            <div id="diabetes-details" style="display: none;">
+                <input type="number" id="diabetes-years" placeholder="Years with diabetes" />
+                <input type="text" id="diabetes-level" placeholder="Diabetes level (Type 1/Type 2)" />
+            </div>
+        </div>
+
+        <!-- Blood Pressure Input -->
+        <div class="input-group">
+            <label for="blood-pressure">Do you have Blood Pressure issues? (yes/no):</label>
+            <input type="text" id="blood-pressure" placeholder="yes/no" required />
+            <div id="bp-condition-details" style="display: none;">
+                <input type="text" id="bp-condition" placeholder="High BP/Low BP condition description" />
+            </div>
+        </div>
+
+        <!-- Asthma Input -->
+        <div class="input-group">
+            <label for="asthma">Do you have Asthma? (yes/no):</label>
+            <input type="text" id="asthma" placeholder="yes/no" required />
+        </div>
+
+        <!-- Blood Report Upload -->
+        <h3>Upload Blood Report</h3>
+        <p style='color:red;'>Disclaimer: Blood report must not be more than 7 days old.</p>
+        <input type="file" id='blood-report' accept=".pdf,.jpg,.png" />
+
+        <!-- Submit Button -->
+        <button id='submit'>Submit</button>
+    </div>
+
+    <script src="form.js"></script>
+</body>
+</html>
