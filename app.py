@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 model_path = os.path.join('static', 'model', 'model10.h5')
 model = keras.models.load_model(model_path, compile=False)
-
+//model path updated 
 
 disease_classes = {
     0: {'name': 'Actinic keratoses and intraepithelial carcinoma (Bowen’s disease)', 'image_folder': 'AKIEC'},
