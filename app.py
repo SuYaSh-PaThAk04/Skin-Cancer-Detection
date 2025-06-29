@@ -3,7 +3,7 @@ from tensorflow import keras
 from PIL import Image
 import numpy as np
 import os
-
+#here we start writing code
 app = Flask(__name__)
 
 model_path = os.path.join('static', 'model', 'model10.h5')
